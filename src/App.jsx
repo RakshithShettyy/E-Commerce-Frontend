@@ -1,11 +1,17 @@
 import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./containers/Home";
+import Login from "./containers/LoginPage";
 
 function App() {
   return (
     <>
-      <h1 className="text-3xl from-neutral-600 flex items-center h-screen justify-center bg-green-400">
-        Hello world!
-      </h1>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="login" element={<Login />} />
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }
