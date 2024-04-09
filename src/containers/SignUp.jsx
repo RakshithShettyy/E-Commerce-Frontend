@@ -17,7 +17,7 @@ const SignUp = () => {
     }
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      navigate("/"); // Navigate to home page or dashboard upon successful signup
+      navigate("/");
     } catch (error) {
       console.error("Error signing up:", error.message);
       alert("Error signing up, please try again.");

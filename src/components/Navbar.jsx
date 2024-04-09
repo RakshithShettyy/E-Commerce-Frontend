@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { auth } from "../firebase-config";
 import { useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
+import { IoPersonOutline, IoSearchOutline } from "react-icons/io5";
 
 const Navbar = () => {
   const [user, setUser] = useState(null);
@@ -15,6 +16,7 @@ const Navbar = () => {
     console.log(user);
     return unsubscribe;
   }, []);
+
   return (
     <div>
       <nav class="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
@@ -32,7 +34,13 @@ const Navbar = () => {
               E Shop
             </span>
           </a>
-          <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+          <div class="flex md:order-2 space-x-5 md:space-x-5 lg:space-x-5 rtl:space-x-reverse items-center">
+            <a href="/profile" class="text-white hover:text-blue-700 ">
+              <IoPersonOutline className="h-6 w-6" />
+            </a>
+            <a href="/search" class="text-white hover:text-blue-700">
+              <IoSearchOutline className="h-6 w-6" />
+            </a>
             {user ? (
               <button
                 onClick={() => {
@@ -96,21 +104,21 @@ const Navbar = () => {
                 <a
                   href="#"
                   class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">
-                  Services
+                  Men
                 </a>
               </li>
               <li>
                 <a
                   href="#"
                   class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">
-                  Services
+                  Women
                 </a>
               </li>
               <li>
                 <a
                   href="#"
                   class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">
-                  Products
+                  Baby Collection
                 </a>
               </li>
               <li>
