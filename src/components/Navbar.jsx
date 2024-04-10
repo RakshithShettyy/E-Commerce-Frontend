@@ -3,10 +3,19 @@ import { auth } from "../firebase-config";
 import { useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { IoPersonOutline, IoSearchOutline } from "react-icons/io5";
+import { CiShoppingCart } from "react-icons/ci";
+import { useTheme } from "../ThemeProvider/theme";
 
 const Navbar = () => {
   const [user, setUser] = useState(null);
+  const { theme, setTheme } = useTheme();
   const navigate = useNavigate();
+
+  const toggleTheme = () => {
+    setTheme(theme === "light" ? "dark" : "light");
+  };
+
+  const iconClasses = `h-6 w-6 ${theme === "dark" ? "text-white" : "text-black"} hover:text-blue-700`;
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -35,12 +44,29 @@ const Navbar = () => {
             </span>
           </a>
           <div class="flex md:order-2 space-x-5 md:space-x-5 lg:space-x-5 rtl:space-x-reverse items-center">
-            <a href="/profile" class="text-white hover:text-blue-700 ">
-              <IoPersonOutline className="h-6 w-6" />
+            <a href="/profile" className={iconClasses}>
+              <IoPersonOutline />
             </a>
-            <a href="/search" class="text-white hover:text-blue-700">
-              <IoSearchOutline className="h-6 w-6" />
+
+            <a href="/search" className={iconClasses}>
+              <IoSearchOutline />
             </a>
+
+            <a href="/cart" className={iconClasses}>
+              <CiShoppingCart />
+            </a>
+
+            <button
+              onClick={toggleTheme}
+              style={{
+                fontSize: "24px",
+                cursor: "pointer",
+                background: "none",
+                border: "none",
+              }}>
+              {theme === "light" ? "🌙" : "☀️"}
+            </button>
+
             {user ? (
               <button
                 onClick={() => {

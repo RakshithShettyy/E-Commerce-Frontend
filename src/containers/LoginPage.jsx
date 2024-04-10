@@ -1,8 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { auth } from "../firebase-config";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 const Login = () => {
   const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = async (event) => {
+    event.preventDefault();
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      navigate("/");
+    } catch (error) {
+      console.error("Error signing in:", error.message);
+      alert("Failed to login, please try again.");
+    }
+  };
   return (
     <div class="min-h-screen flex flex-col items-center justify-center bg-gray-300">
       <div class="flex flex-col bg-white shadow-md px-4 sm:px-6 md:px-8 lg:px-10 py-8 rounded-md w-full max-w-md">
@@ -15,15 +32,15 @@ const Login = () => {
           </span>
           <span>Login with Facebook</span>
         </button> */}
-        <div class="relative mt-10 h-px bg-gray-300">
+        {/* <div class="relative mt-10 h-px bg-gray-300">
           <div class="absolute left-0 top-0 flex justify-center w-full -mt-2">
             <span class="bg-white px-4 text-xs text-gray-500 uppercase">
               Or Login With Email
             </span>
           </div>
-        </div>
+        </div> */}
         <div class="mt-10">
-          <form action="#">
+          <form onSubmit={handleLogin}>
             <div class="flex flex-col mb-6">
               <label
                 for="email"
@@ -48,8 +65,9 @@ const Login = () => {
                   id="email"
                   type="email"
                   name="email"
-                  class="text-sm sm:text-base placeholder-gray-500 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400"
+                  className="text-sm sm:text-base placeholder-gray-500 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400"
                   placeholder="E-Mail Address"
+                  onChange={(e) => setEmail(e.target.value)} // Update email state
                 />
               </div>
             </div>
@@ -79,8 +97,9 @@ const Login = () => {
                   id="password"
                   type="password"
                   name="password"
-                  class="text-sm sm:text-base placeholder-gray-500 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400"
+                  className="text-sm sm:text-base placeholder-gray-500 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400"
                   placeholder="Password"
+                  onChange={(e) => setPassword(e.target.value)} // Update password state
                 />
               </div>
             </div>
