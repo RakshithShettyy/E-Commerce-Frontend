@@ -5,15 +5,30 @@ import { onAuthStateChanged } from "firebase/auth";
 import { IoPersonOutline, IoSearchOutline } from "react-icons/io5";
 import { CiShoppingCart } from "react-icons/ci";
 import { useTheme } from "../ThemeProvider/theme";
+import axios from "axios";
 
 const Navbar = () => {
+  // console.log("Categories", Categories);
   const [user, setUser] = useState(null);
   const { theme, setTheme } = useTheme();
   const navigate = useNavigate();
+  const [categories, setCategories] = useState([]);
 
   const toggleTheme = () => {
     setTheme(theme === "light" ? "dark" : "light");
   };
+
+  useEffect(() => {
+    axios
+      .get("https://fakestoreapi.com/products/categories")
+      .then((response) => {
+        console.log(response.data);
+        setCategories(response.data);
+      })
+      .catch((error) => {
+        console.error("There was an error!", error);
+      });
+  }, []);
 
   const iconClasses = `h-6 w-6 ${theme === "dark" ? "text-white" : "text-black"} hover:text-blue-700`;
 
@@ -114,7 +129,7 @@ const Navbar = () => {
               </svg>
             </button>
           </div>
-          <div
+          {/* <div
             class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
             id="navbar-sticky">
             <ul class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
@@ -155,7 +170,39 @@ const Navbar = () => {
                 </a>
               </li>
             </ul>
+          </div> */}
+        </div>
+        <div class="mt-4 flex items-center justify-between">
+          <div class="flex gap-x-2 py-1 px-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5 text-gray-500"
+              viewBox="0 0 20 20"
+              fill="currentColor">
+              <path
+                fill-rule="evenodd"
+                d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            <span class="text-sm font-medium">California</span>
           </div>
+
+          <div class="flex gap-x-8">
+            {categories.map((category, index) => {
+              return (
+                <span
+                  key={index}
+                  className="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:text-blue-700 capitalize">
+                  {category}
+                </span>
+              );
+            })}
+          </div>
+
+          <span class="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium">
+            Becoma a seller
+          </span>
         </div>
       </nav>
     </div>

@@ -3,9 +3,8 @@ import Navbar from "../components/Navbar";
 import { auth } from "../firebase-config";
 import axios from "axios";
 import { Blockquote } from "flowbite-react";
-import ProductCards from "../components/ProductCards";
 import Trending from "./Trending";
-import { Card, CardContent } from "@/components/ui/card";
+
 import {
   Carousel,
   CarouselContent,
@@ -13,9 +12,12 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import ProductCards from "@/components/ProductCards";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
+  const [trending, setTrending] = useState([]);
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
@@ -31,10 +33,16 @@ const Home = () => {
 
   useEffect(() => {
     axios
-      .get("https://fakestoreapi.com/products/")
+      .get("https://fakestoreapi.com/products")
       .then((response) => {
-        console.log(response.data);
-        setProducts(response.data);
+        setProducts(response?.data);
+        const shuffled = response?.data?.sort(() => 0.5 - Math.random());
+
+        // Get the first 4 items from the shuffled array
+        const selected = shuffled.slice(0, 4);
+
+        // Set the 4 random products to the trending state
+        setTrending(selected);
       })
       .catch((error) => {
         console.error("There was an error!", error);
@@ -43,18 +51,18 @@ const Home = () => {
   return (
     <>
       <Navbar />
+
       <div className="mt-10 px-20 flex justify-center">
         <Carousel className="w-2/3">
           <CarouselContent>
             {Array.from({ length: 5 }).map((_, index) => (
               <CarouselItem key={index}>
                 <div className="p-1">
-                  {/* Card component removed as no border is needed */}
                   <div className="flex aspect-video items-center justify-center p-6">
                     <img
-                      src={`/images/banners/banner${index + 1}.jpg`} // Corrected path
+                      src={`/images/banners/banner${index + 1}.jpg`}
                       alt={`Slide ${index + 1}`}
-                      className="w-full h-full object-cover" // Adjusted for full width and height
+                      className="w-full h-full object-cover"
                     />
                   </div>
                 </div>
@@ -65,17 +73,18 @@ const Home = () => {
           <CarouselNext />
         </Carousel>
       </div>
-      <div className="w-full">
+
+      {/* <div className="w-full">
         <Blockquote>
           Sale Up To 50% Biggest Discounts. Hurry! Limited Perriod Offer Shop
           Now
         </Blockquote>
         <Trending />
+      </div> */}
+      <div className="new-arrival-section ">
+        <h1 className="text-center font-semibold text-xl">New Arrival's</h1>
+        <ProductCards products={trending} />
       </div>
-
-      <section>
-        <div></div>
-      </section>
     </>
   );
 };
