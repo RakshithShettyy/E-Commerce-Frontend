@@ -6,13 +6,15 @@ import { IoPersonOutline, IoSearchOutline } from "react-icons/io5";
 import { CiShoppingCart } from "react-icons/ci";
 import { useTheme } from "../ThemeProvider/theme";
 import axios from "axios";
+import { Button } from "./ui/button";
+import logo from "/public/images/logo/logoGpt.png";
 
 const Navbar = () => {
-  // console.log("Categories", Categories);
   const [user, setUser] = useState(null);
   const { theme, setTheme } = useTheme();
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleTheme = () => {
     setTheme(theme === "light" ? "dark" : "light");
@@ -21,53 +23,47 @@ const Navbar = () => {
   useEffect(() => {
     axios
       .get("https://fakestoreapi.com/products/categories")
-      .then((response) => {
-        console.log(response.data);
-        setCategories(response.data);
-      })
-      .catch((error) => {
-        console.error("There was an error!", error);
-      });
+      .then((response) => setCategories(response.data))
+      .catch((error) => console.error("There was an error!", error));
   }, []);
-
-  const iconClasses = `h-6 w-6 ${theme === "dark" ? "text-white" : "text-black"} hover:text-blue-700`;
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+      console.log(currentUser);
     });
-
-    console.log(user);
     return unsubscribe;
   }, []);
 
   return (
     <div>
-      <nav class="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
-        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+      <nav
+        className={`bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600`}>
+        <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <a
             href="https://flowbite.com/"
-            class="flex items-center space-x-3 rtl:space-x-reverse">
-            {/* <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="Flowbite Logo"> */}
-            <img
-              src="https://img.freepik.com/free-vector/flat-design-bookstore-logo-template_23-2149325325.jpg?w=740&t=st=1712596283~exp=1712596883~hmac=120186ce93e24212863d3fe589b23849cc364fc810e84d567e11f5e887956af1"
-              class="h-8"
-              alt="logo"
-            />
-            <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
-              E Shop
+            className="flex items-center space-x-3 rtl:space-x-reverse">
+            <img src={logo} className="h-8" alt="logo" />
+            <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+              EcoCart
             </span>
           </a>
-          <div class="flex md:order-2 space-x-5 md:space-x-5 lg:space-x-5 rtl:space-x-reverse items-center">
-            <a href="/profile" className={iconClasses}>
+          <div className="flex md:order-2 space-x-5 md:space-x-5 lg:space-x-5 rtl:space-x-reverse items-center">
+            <a
+              href="/profile"
+              className={`h-6 w-6 ${theme === "dark" ? "text-white" : "text-black"} hover:text-blue-700`}>
               <IoPersonOutline />
             </a>
 
-            <a href="/search" className={iconClasses}>
+            <a
+              href="/search"
+              className={`h-6 w-6 ${theme === "dark" ? "text-white" : "text-black"} hover:text-blue-700`}>
               <IoSearchOutline />
             </a>
 
-            <a href="/cart" className={iconClasses}>
+            <a
+              href="/cart"
+              className={`h-6 w-6 ${theme === "dark" ? "text-white" : "text-black"} hover:text-blue-700`}>
               <CiShoppingCart />
             </a>
 
@@ -83,7 +79,7 @@ const Navbar = () => {
             </button>
 
             {user ? (
-              <button
+              <Button
                 onClick={() => {
                   auth
                     .signOut()
@@ -95,114 +91,48 @@ const Navbar = () => {
                       console.error("Logout error:", error);
                       alert("Failed to log out");
                     });
-                }}
-                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                }}>
                 Logout
-              </button>
+              </Button>
             ) : (
-              <button
-                onClick={() => navigate("/login")}
-                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                Login
-              </button>
+              <Button onClick={() => navigate("/login")}>Login</Button>
             )}
+
             <button
-              data-collapse-toggle="navbar-sticky"
-              type="button"
-              class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
               aria-controls="navbar-sticky"
-              aria-expanded="false">
-              <span class="sr-only">Open main menu</span>
+              aria-expanded={isMenuOpen}>
+              <span className="sr-only">Open main menu</span>
               <svg
-                class="w-5 h-5"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
+                className="w-5 h-5"
                 fill="none"
-                viewBox="0 0 17 14">
+                viewBox="0 0 24 24"
+                stroke="currentColor">
                 <path
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M1 1h15M1 7h15M1 13h15"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 6h16M4 12h16m-7 6h7"
                 />
               </svg>
             </button>
           </div>
-          {/* <div
-            class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
-            id="navbar-sticky">
-            <ul class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-              <li>
-                <a
-                  href="#"
-                  class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500"
-                  aria-current="page">
-                  Home
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">
-                  Men
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">
-                  Women
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">
-                  Baby Collection
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">
-                  Cart
-                </a>
-              </li>
-            </ul>
-          </div> */}
-        </div>
-        <div class="mt-4 flex items-center justify-between">
-          <div class="flex gap-x-2 py-1 px-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5 text-gray-500"
-              viewBox="0 0 20 20"
-              fill="currentColor">
-              <path
-                fill-rule="evenodd"
-                d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                clip-rule="evenodd"
-              />
-            </svg>
-            <span class="text-sm font-medium">California</span>
-          </div>
 
-          <div class="flex gap-x-8">
-            {categories.map((category, index) => {
-              return (
-                <span
-                  key={index}
-                  className="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:text-blue-700 capitalize">
-                  {category}
-                </span>
-              );
-            })}
-          </div>
-
-          <span class="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium">
-            Becoma a seller
-          </span>
+          {isMenuOpen && (
+            <div className="md:hidden">
+              <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                {categories.map((category, index) => (
+                  <a
+                    key={index}
+                    href="#"
+                    className="text-gray-700 hover:bg-gray-50 block px-3 py-2 rounded-md text-base font-medium">
+                    {category}
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </nav>
     </div>

@@ -1,122 +1,61 @@
 import React from "react";
 
 const ProductCards = ({ products }) => {
-  console.log("products", products);
   return (
-    <div className="flex flex-wrap justify-center gap-4">
+    <div className="flex flex-wrap justify-center gap-4 p-6">
       {products.map((product) => (
-        // <div
-        //   key={product.id} // Assuming each product has a unique id
-        //   className="group my-10 flex w-full max-w-xs flex-col overflow-hidden bg-white">
-        //   <a className="relative flex h-80 w-72 overflow-hidden" href="#">
-        //     <img
-        //       className="absolute top-0 right-0 h-full w-full object-cover"
-        //       src={product.image}
-        //       alt="product image"
-        //     />
-        //     <div className="absolute bottom-0 mb-4 flex w-full justify-center space-x-4">
-        //       <div className="h-3 w-3 rounded-full border-2 border-white bg-white"></div>
-        //       <div className="h-3 w-3 rounded-full border-2 border-white bg-transparent"></div>
-        //       <div className="h-3 w-3 rounded-full border-2 border-white bg-transparent"></div>
-        //     </div>
-        //   </a>
-        //   {/* Content container with flex grow to push the title and price to the bottom */}
-        //   <div className="flex flex-grow flex-col justify-end mt-4">
-        //     <div className="min-h-[60px] flex-grow">
-        //       {" "}
-        //       {/* Ensure title has a consistent space */}
-        //       <a href="#">
-        //         <h5 className="text-center tracking-tight text-gray-500">
-        //           {product.title}
-        //         </h5>
-        //       </a>
-        //     </div>
-        //     <div className="mb-5 flex justify-center">
-        //       <p>
-        //         <span className="text-sm font-bold text-gray-900">
-        //           ${product.price}
-        //         </span>
-        //         <span className="text-sm text-gray-400 line-through">
-        //           ${Math.floor(product.price * 1.3 * 100) / 100}
-        //         </span>
-        //       </p>
-        //     </div>
-        //   </div>
-        // </div>
-
-        <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-          <a href="#">
+        <article
+          key={product.id}
+          className="relative flex flex-col overflow-hidden rounded-lg border w-full max-w-xs">
+          <div className="aspect-square overflow-hidden">
             <img
-              className="p-8 rounded-t-lg"
-              src={product.image}
-              alt="product image"
+              className="h-full w-full object-cover transition-all duration-300 hover:scale-125"
+              src={product.thumbnail}
+              alt={`Thumbnail of ${product.title}`}
             />
-          </a>
-          <div className="px-5 pb-5">
-            <a href="#">
-              <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                {product.title}
-              </h5>
-            </a>
-            <div className="flex items-center mt-2.5 mb-5">
-              <div className="flex items-center space-x-1 rtl:space-x-reverse">
-                <svg
-                  className="w-4 h-4 text-yellow-300"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor"
-                  viewBox="0 0 22 20">
-                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                </svg>
-                <svg
-                  className="w-4 h-4 text-yellow-300"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor"
-                  viewBox="0 0 22 20">
-                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                </svg>
-                <svg
-                  className="w-4 h-4 text-yellow-300"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor"
-                  viewBox="0 0 22 20">
-                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                </svg>
-                <svg
-                  className="w-4 h-4 text-yellow-300"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor"
-                  viewBox="0 0 22 20">
-                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                </svg>
-                <svg
-                  className="w-4 h-4 text-gray-200 dark:text-gray-600"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor"
-                  viewBox="0 0 22 20">
-                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                </svg>
-              </div>
-              <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ms-3">
-                {product.rating.rate}
-              </span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-3xl font-bold text-gray-900 dark:text-white">
-                ${product.price}
-              </span>
-              <a
-                href="#"
-                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                Add to cart
-              </a>
-            </div>
           </div>
-        </div>
+          <div className="absolute top-0 left-0 m-2">
+            <p className="rounded-full bg-emerald-500 p-1 text-[10px] font-bold uppercase tracking-wide text-white">
+              {product.discountPercentage.toFixed(2)}% OFF
+            </p>
+          </div>
+          <div className="flex-1 p-4 flex flex-col justify-between">
+            {" "}
+            {/* Flex container with flex-grow */}
+            <div className="mb-4">
+              <div className="mb-2 flex justify-between items-center">
+                <p className="text-lg font-semibold">
+                  ${product.price.toFixed(2)}
+                </p>
+                <del className="text-sm text-gray-400">
+                  $
+                  {(
+                    product.price *
+                    (1 + product.discountPercentage / 100)
+                  ).toFixed(2)}
+                </del>
+              </div>
+              <h3 className="text-md text-gray-800 dark:text-white">
+                {product.title}
+              </h3>{" "}
+              {/* Text color for dark mode */}
+              <p className="text-sm text-gray-600 dark:text-gray-300">
+                {product.description}
+              </p>{" "}
+              {/* Text color for dark mode */}
+            </div>
+            <button className="mx-auto mt-auto flex h-10 w-10/12 items-stretch overflow-hidden rounded-md bg-gray-100 text-gray-600 hover:bg-emerald-600 hover:text-white dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-emerald-700">
+              {" "}
+              {/* Button alignment and colors for dark mode */}
+              <div className="flex-1 flex items-center justify-center text-xs uppercase">
+                Add to Cart
+              </div>
+              <div className="flex items-center justify-center bg-gray-200 px-4 text-xs dark:bg-gray-600">
+                +
+              </div>
+            </button>
+          </div>
+        </article>
       ))}
     </div>
   );

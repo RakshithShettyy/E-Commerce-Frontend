@@ -17,6 +17,7 @@ import ProductCards from "@/components/ProductCards";
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [trending, setTrending] = useState([]);
+  const [topSelling, setTopSelling] = useState([]);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -33,13 +34,21 @@ const Home = () => {
 
   useEffect(() => {
     axios
-      .get("https://fakestoreapi.com/products")
+      .get("https://dummyjson.com/products")
       .then((response) => {
-        setProducts(response?.data);
-        const shuffled = response?.data?.sort(() => 0.5 - Math.random());
-
+        console.log(response);
+        setProducts(response?.data?.products);
+        const shuffled = response?.data?.products.sort(
+          () => 0.5 - Math.random()
+        );
         // Get the first 4 items from the shuffled array
         const selected = shuffled.slice(0, 4);
+        const topSelling = response.data.products.filter(
+          (product) => product.rating > 4
+        );
+        const UpdatedTop = topSelling.sort(() => 0.5 - Math.random());
+        console.log(topSelling);
+        setTopSelling(UpdatedTop.slice(0, 4));
 
         // Set the 4 random products to the trending state
         setTrending(selected);
@@ -84,6 +93,10 @@ const Home = () => {
       <div className="new-arrival-section ">
         <h1 className="text-center font-semibold text-xl">New Arrival's</h1>
         <ProductCards products={trending} />
+      </div>
+      <div className="top-selling-section ">
+        <h1 className="text-center font-semibold text-xl">Top Selling</h1>
+        <ProductCards products={topSelling} />
       </div>
     </>
   );
