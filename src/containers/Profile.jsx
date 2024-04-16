@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar";
 const Profile = () => {
   return (
     <>
-      <Navbar />
+      <h1>Profiles</h1>
     </>
   );
 };
