@@ -7,6 +7,8 @@ import Profile from "./containers/Profile";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { ThemeProvider } from "./ThemeProvider/theme";
+import store from "./containers/app/store";
+import { Provider } from "react-redux";
 
 const Layout = ({ children }) => (
   <div>
@@ -20,28 +22,30 @@ function App() {
   return (
     <>
       <ThemeProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <Layout>
-                  <Home />
-                </Layout>
-              }
-            />
-            <Route path="login" element={<Login />} />
-            <Route path="signup" element={<SignUp />} />
-            <Route
-              path="profile"
-              element={
-                <Layout>
-                  <Profile />
-                </Layout>
-              }
-            />
-          </Routes>
-        </BrowserRouter>
+        <Provider store={store}>
+          <BrowserRouter>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <Layout>
+                    <Home />
+                  </Layout>
+                }
+              />
+              <Route path="login" element={<Login />} />
+              <Route path="signup" element={<SignUp />} />
+              <Route
+                path="profile"
+                element={
+                  <Layout>
+                    <Profile />
+                  </Layout>
+                }
+              />
+            </Routes>
+          </BrowserRouter>
+        </Provider>
       </ThemeProvider>
     </>
   );
