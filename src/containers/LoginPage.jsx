@@ -2,18 +2,26 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase-config";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { useDispatch, useSelector } from "react-redux";
+import toast, { Toaster } from "react-hot-toast";
+import { loginUser } from "./app/features/user/userSlice";
 
 const Login = () => {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { error, loading } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   const handleLogin = async (event) => {
     event.preventDefault();
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      toast.success("Logged in succesfully!");
+      dispatch(loginUser({ email, password }));
+
       navigate("/");
     } catch (error) {
       console.error("Error signing in:", error.message);
@@ -147,6 +155,7 @@ const Login = () => {
           </a>
         </div>
       </div>
+      <Toaster position="top-center" reverseOrder={false} />
     </div>
   );
 };
