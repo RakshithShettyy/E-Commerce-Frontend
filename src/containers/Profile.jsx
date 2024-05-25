@@ -12,12 +12,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import React, { useEffect, useState } from "react";
-
+import { Bounce, toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useForm, Controller } from "react-hook-form";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from "@/firebase-config";
 import { useSelector } from "react-redux";
 import { LineWave } from "react-loader-spinner";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 
 const Profile = () => {
   const {
@@ -30,33 +32,36 @@ const Profile = () => {
   const [profileData, setProfileData] = useState(null);
   const [edit, setEdit] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [alert, setAlert] = useState({
+    message: "",
+    type: "default",
+    visible: false,
+  });
 
   const handleEditProfile = () => {
     setEdit(!edit);
   };
-  console.log(loading);
 
-  useEffect(() => {
-    const fetchProfileData = async () => {
-      setLoading(true);
-      if (user) {
-        try {
-          const docRef = doc(db, "users", user);
-          const docSnap = await getDoc(docRef);
+  const fetchProfileData = async () => {
+    setLoading(true);
+    if (user) {
+      try {
+        const docRef = doc(db, "users", user);
+        const docSnap = await getDoc(docRef);
 
-          if (docSnap.exists()) {
-            setProfileData(docSnap.data());
-          } else {
-            console.log("No such document!");
-          }
-        } catch (error) {
-          console.log("Error fetching document:", error);
-        } finally {
-          setLoading(false);
+        if (docSnap.exists()) {
+          setProfileData(docSnap.data());
+        } else {
+          console.log("No such document!");
         }
+      } catch (error) {
+        console.log("Error fetching document:", error);
+      } finally {
+        setLoading(false);
       }
-    };
-
+    }
+  };
+  useEffect(() => {
     fetchProfileData();
   }, [user]);
   const handleFormSubmit = async (data) => {
@@ -65,12 +70,16 @@ const Profile = () => {
       return;
     }
 
-    console.log("Submitting data:", data);
-
     try {
       await setDoc(doc(db, "users", user), data);
-      console.log("Data successfully written!");
-      alert("Data Saved!");
+
+      setAlert({
+        message: "Data Saved Successfully!",
+        type: "success",
+        visible: true,
+      });
+      toast.success("Data Saved!");
+      fetchProfileData();
     } catch (error) {
       console.log(error);
       console.error("Error saving data: ", error);
@@ -83,6 +92,19 @@ const Profile = () => {
   return (
     <>
       <main className="profile-page">
+        <ToastContainer
+          position="top-center"
+          autoClose={1000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+          transition={Bounce}
+        />
         <section className="relative block h-500-px">
           <div
             className="absolute top-0 w-full h-full bg-center bg-cover"
@@ -183,7 +205,7 @@ const Profile = () => {
                       <div className="text-center mt-12">
                         {!edit ? (
                           <>
-                            <h3 className="text-4xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2 capitalize">
+                            <h3 className="text-4xl font-semibold leading-normal mb-2 text-blueGray-700 capitalize">
                               {profileData?.firstName +
                                 " " +
                                 profileData?.lastName}
