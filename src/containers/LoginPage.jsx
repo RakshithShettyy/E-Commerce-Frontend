@@ -19,9 +19,10 @@ const Login = () => {
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      toast.success("Logged in succesfully!");
+      // const user = userCredential.user;
+      // console.log(user, "user");
+      toast.success("Logged in successfully!");
       dispatch(loginUser({ email, password }));
-
       navigate("/");
     } catch (error) {
       console.error("Error signing in:", error.message);
