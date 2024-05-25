@@ -3,8 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase-config";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
-import toast, { Toaster } from "react-hot-toast";
 import { loginUser } from "./app/features/user/userSlice";
+import { Bounce, toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -23,7 +24,9 @@ const Login = () => {
       // console.log(user, "user");
       toast.success("Logged in successfully!");
       dispatch(loginUser({ email, password }));
-      navigate("/");
+      setTimeout(function () {
+        navigate("/");
+      }, 2000);
     } catch (error) {
       console.error("Error signing in:", error.message);
       alert("Failed to login, please try again.");
@@ -31,6 +34,19 @@ const Login = () => {
   };
   return (
     <div class="min-h-screen flex flex-col items-center justify-center bg-gray-300">
+      <ToastContainer
+        position="top-center"
+        autoClose={1000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+        transition={Bounce}
+      />
       <div class="flex flex-col bg-white shadow-md px-4 sm:px-6 md:px-8 lg:px-10 py-8 rounded-md w-full max-w-md">
         <div class="font-medium self-center text-xl sm:text-2xl uppercase text-gray-800">
           Login To Your Account
@@ -156,7 +172,6 @@ const Login = () => {
           </a>
         </div>
       </div>
-      <Toaster position="top-center" reverseOrder={false} />
     </div>
   );
 };

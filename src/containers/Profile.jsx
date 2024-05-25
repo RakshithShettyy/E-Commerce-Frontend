@@ -81,8 +81,7 @@ const Profile = () => {
       toast.success("Data Saved!");
       fetchProfileData();
     } catch (error) {
-      console.log(error);
-      console.error("Error saving data: ", error);
+      toast.error("Something went wrong, please contact support");
       alert("Failed to save data.");
     }
 
