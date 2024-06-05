@@ -9,6 +9,8 @@ import Footer from "./components/Footer";
 import { ThemeProvider } from "./ThemeProvider/theme";
 import store from "./containers/app/store";
 import { Provider } from "react-redux";
+import ProductDetails from "./containers/ProductDetails";
+import AuthProvider from "./Utils/AuthProvider";
 
 const Layout = ({ children }) => (
   <div>
@@ -20,34 +22,44 @@ const Layout = ({ children }) => (
 
 function App() {
   return (
-    <>
-      <ThemeProvider>
-        <Provider store={store}>
-          <BrowserRouter>
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <Layout>
-                    <Home />
-                  </Layout>
-                }
-              />
-              <Route path="login" element={<Login />} />
-              <Route path="signup" element={<SignUp />} />
-              <Route
-                path="profile"
-                element={
+    <ThemeProvider>
+      <Provider store={store}>
+        <BrowserRouter>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <Layout>
+                  <Home />
+                </Layout>
+              }
+            />
+            <Route path="login" element={<Login />} />
+            <Route path="signup" element={<SignUp />} />
+            <Route
+              path="profile"
+              element={
+                <AuthProvider>
                   <Layout>
                     <Profile />
                   </Layout>
-                }
-              />
-            </Routes>
-          </BrowserRouter>
-        </Provider>
-      </ThemeProvider>
-    </>
+                </AuthProvider>
+              }
+            />
+            <Route
+              path="product-details/:productId"
+              element={
+                <AuthProvider>
+                  <Layout>
+                    <ProductDetails />
+                  </Layout>
+                </AuthProvider>
+              }
+            />
+          </Routes>
+        </BrowserRouter>
+      </Provider>
+    </ThemeProvider>
   );
 }
 

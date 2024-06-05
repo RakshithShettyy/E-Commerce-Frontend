@@ -36,7 +36,7 @@ const Home = () => {
     axios
       .get("https://dummyjson.com/products")
       .then((response) => {
-        console.log(response);
+        console.log("Products on homepage", response);
         setProducts(response?.data?.products);
         const shuffled = response?.data?.products.sort(
           () => 0.5 - Math.random()

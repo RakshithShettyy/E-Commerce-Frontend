@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase-config";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -14,6 +14,8 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const { error, loading } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+
+  useEffect(() => {}, []);
 
   const handleLogin = async (event) => {
     event.preventDefault();

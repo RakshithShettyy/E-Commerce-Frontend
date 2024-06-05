@@ -1,12 +1,22 @@
+import { encodeId } from "@/lib/crpyto";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const ProductCards = ({ products }) => {
+  const navigate = useNavigate();
+  const handleCardClick = (id) => {
+    const encodedId = encodeId(id.toString());
+    navigate(`/product-details/${encodedId}`);
+  };
   return (
-    <div className="flex flex-wrap justify-center gap-4 p-6">
+    <div className="flex flex-wrap justify-center gap-4 p-6 ">
       {products.map((product) => (
         <article
+          onClick={() => {
+            handleCardClick(product.id);
+          }}
           key={product.id}
-          className="relative flex flex-col overflow-hidden rounded-lg border w-full max-w-xs">
+          className="relative flex flex-col overflow-hidden rounded-lg border w-full max-w-xs product-card">
           <div className="aspect-square overflow-hidden">
             <img
               className="h-full w-full object-cover transition-all duration-300 hover:scale-125"
@@ -21,7 +31,6 @@ const ProductCards = ({ products }) => {
           </div>
           <div className="flex-1 p-4 flex flex-col justify-between">
             {" "}
-            {/* Flex container with flex-grow */}
             <div className="mb-4">
               <div className="mb-2 flex justify-between items-center">
                 <p className="text-lg font-semibold">
@@ -38,15 +47,12 @@ const ProductCards = ({ products }) => {
               <h3 className="text-md text-gray-800 dark:text-white">
                 {product.title}
               </h3>{" "}
-              {/* Text color for dark mode */}
               <p className="text-sm text-gray-600 dark:text-gray-300">
                 {product.description}
               </p>{" "}
-              {/* Text color for dark mode */}
             </div>
             <button className="mx-auto mt-auto flex h-10 w-10/12 items-stretch overflow-hidden rounded-md bg-gray-100 text-gray-600 hover:bg-emerald-600 hover:text-white dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-emerald-700">
               {" "}
-              {/* Button alignment and colors for dark mode */}
               <div className="flex-1 flex items-center justify-center text-xs uppercase">
                 Add to Cart
               </div>
