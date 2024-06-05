@@ -79,16 +79,13 @@
   font-size: 25px;
   font-weight: 300;
 }
-
 .product-card {
   cursor: pointer;
 }
-
+.capitalize {
+  text-transform: capitalize;
+}
 .product-details-container {
-  margin: 0px 30px;
-  margin-top: 10%;
-  width: 90vw;
-  height: fit-content;
   display: flex;
   flex-direction: column;
   justify-content: center;
