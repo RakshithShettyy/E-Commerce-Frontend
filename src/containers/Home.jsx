@@ -13,11 +13,13 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import ProductCards from "@/components/ProductCards";
+import Categories from "@/components/Categories";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [trending, setTrending] = useState([]);
   const [topSelling, setTopSelling] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -41,7 +43,7 @@ const Home = () => {
         const shuffled = response?.data?.products.sort(
           () => 0.5 - Math.random()
         );
-        // Get the first 4 items from the shuffled array
+
         const selected = shuffled.slice(0, 4);
         const topSelling = response.data.products.filter(
           (product) => product.rating > 4
@@ -50,16 +52,38 @@ const Home = () => {
         console.log(topSelling);
         setTopSelling(UpdatedTop.slice(0, 4));
 
-        // Set the 4 random products to the trending state
         setTrending(selected);
       })
       .catch((error) => {
         console.error("There was an error!", error);
       });
+    functionCall();
   }, []);
+
+  async function functionCall() {
+    const options = {
+      method: "GET",
+      url: "https://real-time-amazon-data.p.rapidapi.com/product-category-list",
+      params: { country: "US" },
+      headers: {
+        "x-rapidapi-key": "eb890fa265msh332f62b67118c7bp182c1cjsn7d6450faae56",
+        "x-rapidapi-host": "real-time-amazon-data.p.rapidapi.com",
+      },
+    };
+
+    try {
+      const response = await axios.request(options);
+      setCategories(response?.data?.data);
+      console.log("new api", response.data.data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <>
       <Navbar />
+      <Categories data={categories} />
 
       <div className="mt-10 px-20 flex justify-center">
         <Carousel className="w-2/3">
